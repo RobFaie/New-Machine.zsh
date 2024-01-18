@@ -12,7 +12,7 @@ if (( $+commands[brew] )); then
     echo "Homebrew already installed."
 else
     echo "Installing Homebrew."
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
@@ -48,6 +48,10 @@ defaults write com.apple.ImageCapture disableHotPlug -bool true
 echo " - Disable automatic Spaces arrangement"
 defaults write com.apple.dock mru-spaces -bool false
 
+echo
+echo "Making Powershell the login shell."
+chsh -s /usr/local/bin/pwsh
+/usr/local/bin/pwsh -C "touch \$PROFILE.CurrentUserAllHosts; Add-Content -Path \$PROFILE.CurrentUserAllHosts -Value '$($HOMEBREW_PREFIX/bin/brew shellenv) | Invoke-Expression'"
 
 echo
 echo "Setting up Dock:"
